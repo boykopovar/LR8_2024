@@ -6,7 +6,6 @@ bool check_stream(std::istream& input)
 {
     if(input.fail() || input.get() !='\n')
     {
-        std::cout<<"Ошибка\n";
         input.clear();
         for(int c=0;c!='\n';c=input.get());
         return false;

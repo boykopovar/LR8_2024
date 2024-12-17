@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "global_utils.h"
 #include "./Task_2/include/task_2.h"
 

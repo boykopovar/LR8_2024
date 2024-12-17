@@ -145,7 +145,8 @@ void edit_element(product* products)
     }
 
 
-    std::cout<<"\n\n-----------------------------------------------------------------------------\n"
+    std::cout<<std::left<<
+           "\n\n-----------------------------------------------------------------------------\n"
                "|             Поле              | Значение по умолчанию (при нажатии enter) |\n"
                "-----------------------------------------------------------------------------\n"
                "| Наименование                  | *Удаление элемента*                       |\n"
@@ -173,7 +174,7 @@ void edit_element(product* products)
         }
         products[count-1].name="";
         products[count-1].name[0]='\0';
-        save_to_file(products, 0);
+        edit_product_in_file(products, target_index);
     }
     else
     {
@@ -183,7 +184,7 @@ void edit_element(product* products)
         products[target_index].bad_count = input_product_bad_count(products[target_index].bad_count);
         products[target_index].cost.d = input_product_cost(products[target_index].cost.d);
         products[target_index].date = input_product_date(products[target_index].date);
-        save_to_file(products, 0);
+        edit_product_in_file(products, target_index);
     }
 
     print_products(products);

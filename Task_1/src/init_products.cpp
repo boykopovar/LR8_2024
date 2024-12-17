@@ -113,13 +113,10 @@ std::string input_unique_name(product* tickets, int except_unique_index)
 
 std::string input_product_date(const std::string& def)
 {
-    while(true)
-    {
-        std::cout<<"Дата поступления:\n";
-        std::string input_date;
-        std::getline(std::cin, input_date);
-        if (input_date.empty())return def;
-        return input_date;
-    }
+    std::cout<<"Дата поступления:\n";
+    std::string input_date;
+    std::getline(std::cin, input_date);
+    if (input_date.empty())return def;
+    return input_date;
 }
 
