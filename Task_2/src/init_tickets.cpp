@@ -71,10 +71,13 @@ int input_ticket_bad_count(int def)
     return input_bad_count;
 }
 
-std::string input_mark()
+std::string input_mark(const std::string& def)
 {
     std::cout << "Марка прибора:\n";
     std::string input_mark;
+
+    if(std::cin.peek() == '\n')return def;
+
     std::getline(std::cin, input_mark);
     return input_mark;
 }

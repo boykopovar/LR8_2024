@@ -80,13 +80,16 @@ int print_tickets(const ticket* tickets, const std::string& filter_group)
     setlocale(LC_ALL, "ru_RU.UTF-8");
     int last_ticket_index = -1, filtered_count = 0;
     std::string lower_filter_name = string_to_lower(filter_group);
+
     if(tickets == nullptr || tickets[0].group[0]=='\0')
     {
         std::cout<<"Квитанции не добавлены!\n";
         return 0;
     }
+
     freopen(nullptr, "w", stdout);
     freopen(nullptr, "r", stdin);
+
     std::wcout<<'\n'<<std::left
               <<std::setw(8)<<L"№"
               <<std::setw(20)<<L"Группа"
@@ -95,10 +98,23 @@ int print_tickets(const ticket* tickets, const std::string& filter_group)
               <<std::setw(15)<<L"Стутус"
               <<L"Дата\n"
               <<std::wstring(90,'-')<<'\n';
+
     for(int i =0;;++i)
     {
         if (tickets[i].group[0] == '\0')break;
-        if(filter_group.empty() || string_to_lower(tickets[i].group) == lower_filter_name)
+
+        //индекс первого вхождения filter в string_to_lower(tickets[i].group)
+        unsigned long entry_filter = string_to_lower(tickets[i].group).find(lower_filter_name);
+
+        if(entry_filter!= std::string::npos)
+        {
+            if(entry_filter!= 0 && tickets[i].group[entry_filter-1]!= ' ')
+            {
+                entry_filter = std::string::npos;
+            }
+        }
+
+        if(filter_group.empty() || entry_filter != std::string::npos)
         {
             std::wcout << std::left
                       << std::setw(8) << i + 1
@@ -113,6 +129,7 @@ int print_tickets(const ticket* tickets, const std::string& filter_group)
     }
     freopen(nullptr, "w", stdout);
     freopen(nullptr, "r", stdin);
+
     if(!filtered_count)std::cout<<"Нет приборов, удовлетворяющих условиям поиска!\n";
     return last_ticket_index;
 }
@@ -122,6 +139,7 @@ void search_elements_by_group(const ticket* tickets)
     print_tickets(tickets);
     std::cout<<"\nВведите группу для поиска: ";
     std::string input_gr;
+
     std::getline(std::cin, input_gr);
     print_tickets(tickets, input_gr);
 }
@@ -130,17 +148,19 @@ void edit_element(ticket* tickets)
 {
     print_tickets(tickets);
     std::cout<<"\nВведите номер для редактирования: ";
+
     if(std::cin.get() == '\n') return;
     else std::cin.unget();
+
     int target_index = -1;
     std::cin>>target_index;
+
     if(!check_stream() || target_index<=0)
     {
         std::cout<<"Прибор не найден!\n";
         return;
     }
     --target_index;
-
 
     std::cout<<std::left<<
            "\n\n-----------------------------------------------------------------------------\n"
@@ -172,19 +192,19 @@ void edit_element(ticket* tickets)
         }
         tickets[count-1].group="";
         tickets[count-1].group[0]='\0';
+
         save_tickets_to_file(tickets, 0);
     }
     else
     {
         tickets[target_index].group = new_group;
 
-        tickets[target_index].mark = input_mark();
+        tickets[target_index].mark = input_mark(tickets[target_index].mark);
         tickets[target_index].bad_count = input_ticket_bad_count(tickets[target_index].bad_count);
         tickets[target_index].status.b = input_status(tickets[target_index].status.b);
         tickets[target_index].date = input_ticket_date(tickets[target_index].date);
-        save_tickets_to_file(tickets, target_index);
+        save_tickets_to_file(tickets, 0);
     }
-
     print_tickets(tickets);
 }
 

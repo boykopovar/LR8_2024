@@ -80,13 +80,16 @@ int print_products(const product* products, const std::string& filter_name)
     setlocale(LC_ALL, "ru_RU.UTF-8");
     int last_product_index = -1, filtered_count = 0;
     std::string lower_filter_name = string_to_lower(filter_name);
+
     if(products == nullptr || products[0].name[0]=='\0')
     {
         std::cout<<"Товары не добавлены!\n";
         return 0;
     }
+
     freopen(nullptr, "w", stdout);
     freopen(nullptr, "r", stdin);
+
     std::wcout<<L'\n'<<std::left
              <<std::setw(8)<<L"№"
              <<std::setw(20)<<L"Наименование"
@@ -95,10 +98,22 @@ int print_products(const product* products, const std::string& filter_name)
              <<std::setw(15)<<L"Цена"
              <<L"Дата\n"
              <<std::wstring(90,'-')<<L'\n';
+
     for(int i =0;;++i)
     {
-        if (products[i].name[0] == '\0')break;
-        if(filter_name.empty() || string_to_lower(products[i].name) == lower_filter_name)
+        if (products[i].name[0] == '\0') break;
+
+        //индекс первого вхождения filter в string_to_lower(products[i].name)
+        unsigned long entry_filter = string_to_lower(products[i].name).find(lower_filter_name);
+
+        if(entry_filter!= std::string::npos)
+        {
+            if(entry_filter!= 0 && products[i].name[entry_filter-1]!= ' ')
+            {
+                entry_filter = std::string::npos;
+            }
+        }
+        if(filter_name.empty() || entry_filter != std::string::npos)
         {
             std::wcout << std::left
                       << std::setw(8) << i + 1
@@ -113,6 +128,7 @@ int print_products(const product* products, const std::string& filter_name)
     }
     freopen(nullptr, "w", stdout);
     freopen(nullptr, "r", stdin);
+
     if(!filtered_count)std::cout<<"Нет продуктов, удовлетворяющих условиям поиска!\n";
     return last_product_index;
 }
@@ -122,6 +138,7 @@ void search_elements_by_name(const product* products)
     print_products(products);
     std::cout<<"\nВведите наименование для поиска: ";
     std::string input_name;
+
     std::getline(std::cin, input_name);
     print_products(products, input_name);
 }
@@ -131,19 +148,20 @@ void edit_element(product* products)
     print_products(products);
     std::cout<<"\nВведите наименование для редактирования: ";
     std::string input_name;
+
     std::getline(std::cin, input_name);
     if(is_name_unique(input_name, products))
     {
         std::cout<<"Продукт не найден!\n";
         return;
     }
+
     int target_index = print_products(products, input_name); //вернет индекс последнего выведенного
-    if(target_index==-1)
+    if(target_index==-1) // ничего не вывелось
     {
         std::cout<<"Продукт не найден!\n";
         return;
     }
-
 
     std::cout<<std::left<<
            "\n\n-----------------------------------------------------------------------------\n"
@@ -219,8 +237,10 @@ int print_by_min_cost(const product* products, double min_cost)
         std::cout<<"Товары не добавлены!\n";
         return 0;
     }
+
     freopen(nullptr, "w", stdout);
     freopen(nullptr, "r", stdin);
+
     std::wcout<<'\n'<<std::left
               <<std::setw(8)<<L"№"
               <<std::setw(20)<<L"Наименование"
@@ -245,8 +265,10 @@ int print_by_min_cost(const product* products, double min_cost)
             last_product_index=i;
         }
     }
+
     freopen(nullptr, "w", stdout);
     freopen(nullptr, "r", stdin);
+
     if(!filtered_count)std::cout<<"Нет продуктов дороже "<< min_cost<<'\n';
     return last_product_index;
 }
