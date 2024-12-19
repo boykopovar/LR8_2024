@@ -13,7 +13,7 @@ void copy_one_product(const product& from_product, product& to_product)
     to_product.date = from_product.date;
 }
 
-void longer_products(product*& products, int final_size)
+void longer_products(product*& products, unsigned long long final_size)
 {
     auto* new_products = new product[final_size + 1];
     for(int i =0;products[i].name[0]!='\0';++i)
