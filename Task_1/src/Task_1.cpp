@@ -7,7 +7,7 @@
 void task1()
 {
     std::cout<<"--------------------------------------------------------\n";
-    std::cout<<"| Выполнил   Вариант   Суть                              |\n";
+    std::cout<<"| Выполнил   Вариант   Суть                            |\n";
     std::cout<<"| Бойко А.О. 2         Работа со списком товаров       |\n";
     std::cout<<"--------------------------------------------------------\n\n";
     product* products = nullptr;
@@ -43,7 +43,11 @@ void task1()
             case 4: edit_element(products); break;
             case 5: sort_by_count(products); break;
             case 6: print_by_min_cost(products, 101.341); break;
-            default: return;
+            default:
+            {
+                del_products(products);
+                return;
+            }
         }
     }
     del_products(products);

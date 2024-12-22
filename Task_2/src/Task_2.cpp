@@ -41,7 +41,11 @@ void task2()
             case 3: search_elements_by_group(tickets); break;
             case 4: edit_element(tickets); break;
             case 5: sort_by_count(tickets); break;
-            default: return;
+            default:
+            {
+                delete[] tickets;
+                return;
+            }
         }
     }
     delete[] tickets;

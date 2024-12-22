@@ -7,6 +7,7 @@
 
 bool check_stream(std::istream& input = std::cin);
 void del_products(product*& products);
+void set_locale();
 
 std::string string_to_lower(const std::string& str);
 std::wstring str_to_wstr(const std::string& str);

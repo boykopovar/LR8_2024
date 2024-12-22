@@ -4,7 +4,8 @@
 #include"../include/file_utils.h"
 #include"../include/utils_products.h"
 
-const char MAGIC_TITLE[] = {"BoykoLR"};
+const char MAGIC_TITLE[] = {"BoykoLR"}; //8байт
+
 
 void save_to_file(product* products, int start_index, const std::string& path)
 {
@@ -26,11 +27,8 @@ void save_to_file(product* products, int start_index, const std::string& path)
     file.read((char*)&count, sizeof(count));
     //if(start_index>count) start_index = count;
 
-    unsigned long long int static_pos = start_index*static_struct + sizeof(i) + sizeof(MAGIC_TITLE);
+    unsigned long long int static_pos= start_index*static_struct+sizeof(i)+sizeof(MAGIC_TITLE);
     file.seekp(static_cast<long>(static_pos));
-
-    std::filesystem::resize_file(path, static_pos);
-    //std::filesystem::resize_file(path, count*static_struct + sizeof(i) + sizeof(MAGIC_TITLE));
 
     //статические поля структуры
     for(i=start_index;products[i].name[0]!='\0';++i)
@@ -42,6 +40,8 @@ void save_to_file(product* products, int start_index, const std::string& path)
     count = std::max(count, i);
 
     unsigned long long str_pos = sizeof(MAGIC_TITLE) + sizeof(i) + count*static_struct;
+    std::filesystem::resize_file(path, str_pos);
+    //std::filesystem::resize_file(path, count*static_struct + sizeof(i) + sizeof(MAGIC_TITLE));
     file.seekp(static_cast<long>(str_pos));
 
     //strings в конец
@@ -59,6 +59,7 @@ void save_to_file(product* products, int start_index, const std::string& path)
     file.write((char*)&i, sizeof(i)); //запись количества продуктов после MAGIC_TITLE
     file.close();
 }
+
 
 void edit_product_in_file(product* products, int target_index, const std::string& path)
 {

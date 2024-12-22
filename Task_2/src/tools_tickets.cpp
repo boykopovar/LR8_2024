@@ -6,6 +6,7 @@
 #include"../include/tools_tickets.h"
 #include"../include/file_utils.h"
 
+
 void add_tickets(ticket*& tickets)
 {
     bool inf_get = false;
@@ -77,7 +78,7 @@ void add_tickets(ticket*& tickets)
 
 int print_tickets(const ticket* tickets, const std::string& filter_group)
 {
-    setlocale(LC_ALL, "ru_RU.UTF-8");
+    set_locale();
     int last_ticket_index = -1, filtered_count = 0;
     std::string lower_filter_name = string_to_lower(filter_group);
 

@@ -40,3 +40,8 @@ std::string wstr_to_str(const std::wstring& wstr)
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     return converter.to_bytes(wstr);
 }
+
+void set_locale()
+{
+    setlocale(LC_ALL, "ru_RU.UTF-8");
+}

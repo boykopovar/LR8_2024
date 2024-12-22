@@ -3,12 +3,12 @@ cmake_minimum_required(VERSION 3.10)
 project(LR8)
 
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_CXX_STANDART 20)
+set(CMAKE_CXX_COMPILIER g++)
 set(CMAKE_CXX_FLAGS "-fsanitize=address")
 
 
-add_executable(LR8 ${SOURCES}
+add_executable(LR8
         Lab_8.cpp
         global_utils.cpp
         global_utils.h

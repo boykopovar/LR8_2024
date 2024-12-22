@@ -77,7 +77,7 @@ void add_products(product*& products)
 
 int print_products(const product* products, const std::string& filter_name)
 {
-    setlocale(LC_ALL, "ru_RU.UTF-8");
+    set_locale();
     int last_product_index = -1, filtered_count = 0;
     std::string lower_filter_name = string_to_lower(filter_name);
 
@@ -150,18 +150,9 @@ void edit_element(product* products)
     std::string input_name;
 
     std::getline(std::cin, input_name);
-    if(is_name_unique(input_name, products))
-    {
-        std::cout<<"Продукт не найден!\n";
-        return;
-    }
 
-    int target_index = print_products(products, input_name); //вернет индекс последнего выведенного
-    if(target_index==-1) // ничего не вывелось
-    {
-        std::cout<<"Продукт не найден!\n";
-        return;
-    }
+    int target_index = print_products(products, input_name);
+    if(target_index==-1) return;
 
     std::cout<<std::left<<
            "\n\n-----------------------------------------------------------------------------\n"
@@ -229,7 +220,7 @@ void sort_by_count(product* products)
 
 int print_by_min_cost(const product* products, double min_cost)
 {
-    setlocale(LC_ALL, "ru_RU.UTF-8");
+    set_locale();
 
     int last_product_index = -1, filtered_count = 0;
     if(products == nullptr || products[0].name[0]=='\0')
